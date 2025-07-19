@@ -4,9 +4,11 @@ import type { IGuitar } from '../interfaces/guitar.interface';
 interface Props {
   guitar: IGuitar;
   removeFromCart: (id: number) => void;
+  increaseQuantity: (id: number) => void;
+  decreaseQuantity: (id: number) => void;
 }
 
-const Cart: FC<Props> = ( { guitar, removeFromCart } ) => {
+const Cart: FC<Props> = ( { guitar, removeFromCart, increaseQuantity, decreaseQuantity } ) => {
   return (
     <>
       <tr>
@@ -21,6 +23,7 @@ const Cart: FC<Props> = ( { guitar, removeFromCart } ) => {
           <button
             type="button"
             className="btn btn-dark"
+            onClick={() => decreaseQuantity(guitar.id)}
           >
             -
           </button>
@@ -28,6 +31,7 @@ const Cart: FC<Props> = ( { guitar, removeFromCart } ) => {
           <button
             type="button"
             className="btn btn-dark"
+            onClick={() => increaseQuantity(guitar.id)}
           >
             +
           </button>

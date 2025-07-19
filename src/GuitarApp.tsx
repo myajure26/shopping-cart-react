@@ -10,6 +10,9 @@ const GuitarApp = () => {
   const [data, _] = useState(db);  
   const [cart, setCart] = useState<IGuitar[]>([]);
 
+  const MAX_ITEMS = 10;
+  const MIN_ITEMS = 1;
+
   const addToCart = (id: number) => {
     const guitar = data.find(item => item.id === id);
 
@@ -32,6 +35,22 @@ const GuitarApp = () => {
     return;
   }
 
+  const increaseQuantity = (id: number) => {
+    setCart((prevCart) =>
+      prevCart.map(item => 
+        item.id === id && item.quantity! < MAX_ITEMS ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+      )
+    );
+  }
+
+  const decreaseQuantity = (id: number) => {
+    setCart((prevCart) =>
+      prevCart.map(item => 
+        item.id === id && item.quantity! > MIN_ITEMS ? { ...item, quantity: (item.quantity || 1) - 1 } : item
+      ).filter(item => item.quantity! > 0)
+    );
+  }
+
   const removeFromCart = (id: number) => {
 
     setCart((prevCart) => prevCart.filter(item => item.id !== id));
@@ -40,7 +59,7 @@ const GuitarApp = () => {
 
   return (
     <>
-      <Header cart={cart} removeFromCart={removeFromCart} />
+      <Header cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra colección</h2>

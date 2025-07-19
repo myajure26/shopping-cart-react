@@ -5,9 +5,11 @@ import Cart from "./Cart";
 interface Props {
   cart: IGuitar[];
   removeFromCart: (id: number) => void;
+  increaseQuantity: (id: number) => void;
+  decreaseQuantity: (id: number) => void;
 }
 
-const Header: FC<Props> = ({ cart, removeFromCart }) => {
+const Header: FC<Props> = ({ cart, removeFromCart, increaseQuantity, decreaseQuantity }) => {
   const isEmpty = useMemo( () => cart.length === 0, [cart.length]);
   const total = useMemo(() => cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0), [cart]);
 
@@ -50,7 +52,7 @@ const Header: FC<Props> = ({ cart, removeFromCart }) => {
                         </thead>
                         <tbody>
                           {cart.map((item) => (
-                            <Cart key={item.id} guitar={item} removeFromCart={removeFromCart} />
+                            <Cart key={item.id} guitar={item} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} />
                           ))}
                         </tbody>
                       </table>
