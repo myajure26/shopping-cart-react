@@ -1,12 +1,16 @@
-import type { FC } from 'react';
-import type { IGuitar } from '../interfaces/guitar.interface';
-import Cart from './Cart';
+import { useMemo, type FC } from "react";
+import type { IGuitar } from "../interfaces/guitar.interface";
+import Cart from "./Cart";
 
 interface Props {
-  guitar: IGuitar[];
+  cart: IGuitar[];
+  removeFromCart: (id: number) => void;
 }
 
-const Header: FC<Props> = ( { guitar } ) => {
+const Header: FC<Props> = ({ cart, removeFromCart }) => {
+  const isEmpty = useMemo( () => cart.length === 0, [cart.length]);
+  const total = useMemo(() => cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0), [cart]);
+
   return (
     <>
       <header className="py-5 header">
@@ -14,36 +18,51 @@ const Header: FC<Props> = ( { guitar } ) => {
           <div className="row justify-content-center justify-content-md-between">
             <div className="col-8 col-md-3">
               <a href="index.html">
-                <img className="img-fluid" src="./public/img/logo.svg" alt="imagen logo" />
+                <img
+                  className="img-fluid"
+                  src="./public/img/logo.svg"
+                  alt="imagen logo"
+                />
               </a>
             </div>
             <nav className="col-md-6 a mt-5 d-flex align-items-start justify-content-end">
-              <div
-                className="cart"
-              >
-                <img className="img-fluid" src="./public/img/cart.png" alt="imagen carrito" />
+              <div className="cart">
+                <img
+                  className="img-fluid"
+                  src="./public/img/cart.png"
+                  alt="imagen carrito"
+                />
 
                 <div id="cart" className="bg-white p-3">
-                  <p className="text-center">El carrito esta vacio</p>
-                  <table className="w-100 table">
-                    <thead>
-                      <tr>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      { guitar.map( ( item ) => (
-                        <Cart key={ item.id } guitar={ item } />
-                      ) ) }
-                    </tbody>
-                  </table>
+                  {isEmpty ? (
+                    <p className="text-center">El carrito esta vacio</p>
+                  ) : (
+                    <>
+                      <table className="w-100 table">
+                        <thead>
+                          <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {cart.map((item) => (
+                            <Cart key={item.id} guitar={item} removeFromCart={removeFromCart} />
+                          ))}
+                        </tbody>
+                      </table>
 
-                  <p className="text-end">Total pagar: <span className="fw-bold">$899</span></p>
-                  <button className="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                      <p className="text-end">
+                        Total pagar: <span className="fw-bold">${total}</span>
+                      </p>
+                      <button className="btn btn-dark w-100 mt-3 p-2">
+                        Vaciar Carrito
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </nav>

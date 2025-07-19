@@ -3,9 +3,10 @@ import type { IGuitar } from '../interfaces/guitar.interface';
 
 interface Props {
   guitar: IGuitar;
+  removeFromCart: (id: number) => void;
 }
 
-const Cart: FC<Props> = ( { guitar } ) => {
+const Cart: FC<Props> = ( { guitar, removeFromCart } ) => {
   return (
     <>
       <tr>
@@ -35,6 +36,7 @@ const Cart: FC<Props> = ( { guitar } ) => {
           <button
             className="btn btn-danger"
             type="button"
+            onClick={() => removeFromCart(guitar.id)}
           >
             X
           </button>

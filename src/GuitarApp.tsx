@@ -21,6 +21,7 @@ const GuitarApp = () => {
       setCart((prevCart) => [...prevCart, { ...guitar, quantity: 1 }]);
       return;
     }
+
     const updatedCart = cart.map(item => {
       if (item.id === id) {
         item.quantity! += 1; 
@@ -31,9 +32,15 @@ const GuitarApp = () => {
     return;
   }
 
+  const removeFromCart = (id: number) => {
+
+    setCart((prevCart) => prevCart.filter(item => item.id !== id));
+
+  }
+
   return (
     <>
-      <Header guitar={cart} />
+      <Header cart={cart} removeFromCart={removeFromCart} />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra colección</h2>
@@ -48,7 +55,7 @@ const GuitarApp = () => {
 
       <footer className="bg-dark mt-5 py-5">
         <div className="container-xl">
-          <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarLA - Todos los derechos reservados</p>
+          <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarShop - Todos los derechos reservados</p>
         </div>
       </footer>
     </>
