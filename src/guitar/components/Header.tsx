@@ -7,9 +7,10 @@ interface Props {
   removeFromCart: (id: number) => void;
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
+  clearCart?: () => void; // Optional prop for clearing the cart
 }
 
-const Header: FC<Props> = ({ cart, removeFromCart, increaseQuantity, decreaseQuantity }) => {
+const Header: FC<Props> = ({ cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart }) => {
   const isEmpty = useMemo( () => cart.length === 0, [cart.length]);
   const total = useMemo(() => cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0), [cart]);
 
@@ -60,7 +61,7 @@ const Header: FC<Props> = ({ cart, removeFromCart, increaseQuantity, decreaseQua
                       <p className="text-end">
                         Total pagar: <span className="fw-bold">${total}</span>
                       </p>
-                      <button className="btn btn-dark w-100 mt-3 p-2">
+                      <button className="btn btn-dark w-100 mt-3 p-2" onClick={clearCart}>
                         Vaciar Carrito
                       </button>
                     </>
